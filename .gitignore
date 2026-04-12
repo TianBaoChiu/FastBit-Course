@@ -1,0 +1,23 @@
+# --- STM32CubeIDE / Eclipse 相關 ---
+.metadata/
+RemoteSystemsTempFiles/
+.recommenders/
+
+# --- 編譯輸出 (Build Artifacts) ---
+**/Debug/
+**/Release/
+**/bin/
+**/obj/
+*.list
+*.map
+*.elf
+*.hex
+*.bin
+
+# --- 專案特定本地設定 ---
+.settings/
+*.launch
+
+# --- 作業系統暫存檔 ---
+.DS_Store
+Thumbs.db

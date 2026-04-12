@@ -39,7 +39,18 @@ extern int __io_getchar(void) __attribute__((weak));
 char *__env[1] = { 0 };
 char **environ = __env;
 
+#define DEMCR                *((volatile uint32_t*) 0xE000EDFCU )
+#define ITM_STIMULUS_PORT0  *((volatile uint32_t*) 0xE0000000 )
+#define ITM_TRACE_EN        *((volatile uint32_t*) 0xE0000E00 )
 
+void ITM_SendChar(uint8_t ch)
+{
+    DEMCR |= (1 << 24);            // Enable trace
+    ITM_TRACE_EN |= (1 << 0);      // Enable stimulus port 0
+
+    while (!(ITM_STIMULUS_PORT0 & 1));  // Wait for ready
+    ITM_STIMULUS_PORT0 = ch;            // Send character
+}
 /* Functions */
 void initialise_monitor_handles()
 {
@@ -84,7 +95,7 @@ __attribute__((weak)) int _write(int file, char *ptr, int len)
 
   for (DataIdx = 0; DataIdx < len; DataIdx++)
   {
-    __io_putchar(*ptr++);
+    ITM_SendChar(*ptr++);
   }
   return len;
 }
