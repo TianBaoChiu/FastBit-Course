@@ -116,7 +116,6 @@ int main()
     display_numbers(numbers,len,"I-sorted array   :");
 
 
-
     return 0;
 }
 
