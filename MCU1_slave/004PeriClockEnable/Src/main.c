@@ -23,14 +23,27 @@
 #define ADC_CR1_REG_OFFSET			0x04UL
 #define ADC_CR1_REG_ADDR			(ADC_BASE_ADDR + ADC_CR1_REG_OFFSET)
 
+#define RCC_BASE_ADDR         0x40023800UL
+#define RCC_APB2_ENB_OFFSET   0x44UL
+#define RCC_APB2_ENR_ADDR     (RCC_BASE_ADDR + RCC_APB2_ENB_OFFSET)
+
+// Bit 定義
+#define ADC_CR1_SCANBIT       8   // ADC_CR1 Bit 8
+#define ADC1_ENBBIT           8   // RCC_APB2ENR Bit 8
+
 
 int main(void)
 {
     /* Loop forever */
 
+
+	volatile uint32_t * const pRccApb2Enr = (uint32_t *) RCC_APB2_ENR_ADDR;
 	volatile uint32_t * const pAdcCr1Reg = (uint32_t*) ADC_CR1_REG_ADDR;
 
-	*pAdcCr1Reg |= (1 << 8) ;
+
+	*pRccApb2Enr |= (1 << ADC1_ENBBIT);
+
+	*pAdcCr1Reg |= (1 << ADC_CR1_SCANBIT) ;
 
 
 	for(;;);
